@@ -5,7 +5,8 @@ My Solutions Of The [SQL ZOO Tutorial]( https://sqlzoo.net/wiki/SQL_Tutorial)
 0) [SELECT Basics](#select-basics)
 1) [SELECT Names](#select-names)
 2) [SELECT From World](#select-from-world)
-3) [Select From Nobel](#select-from-nobel)
+3) [SELECT From Nobel](#select-from-nobel)
+4) [SELECT Within SELECT] (#select-within-select)
 
 # SELECT Basics
 ##  1. **Show the population of Germany.**
@@ -377,3 +378,59 @@ SELECT winner, subject
   FROM nobel
  WHERE yr=1984
  ORDER BY subject in ('Chemistry','Physics') DESC, subject, winner
+```
+# SELECT Within SELECT
+
+## 1. **List each country name where the population is larger than that of 'Russia'.**
+```sql
+SELECT name FROM world
+  WHERE population >
+           (SELECT population 
+              FROM world
+             WHERE name='Russia')
+```
+
+## 2. **Show the countries in Europe with a per capita GDP greater than 'United Kingdom'.**
+```sql
+SELECT name FROM world
+ WHERE continent = 'Europe'
+   AND gdp/population > (SELECT gdp/population
+                           FROM world
+                          WHERE name = 'United Kingdom')
+```
+
+## 3. **List the name and continent of countries in the continents containing either Argentina or Australia. Order by name of the country.**
+
+```sql 
+SELECT name, continent 
+  FROM world
+ WHERE continent IN (SELECT continent
+                       FROM world
+                      WHERE name IN ('Argentina','Australia')
+                     )
+ ORDER BY name
+```
+
+## 4. **Which country has a population that is more than United Kingom but less than Germany? Show the name and the population.**
+
+```sql 
+SELECT name, population
+  FROM world
+ WHERE population > (SELECT population
+                       FROM world
+                      WHERE name = 'United Kingdom')
+   AND population < (SELECT population
+                       FROM world
+                      WHERE name = 'Germany')
+```
+
+## 5. **Show the name and the population of each country in Europe. Show the population as a percentage of the population of Germany.**
+
+```sql
+SELECT name, CONCAT(ROUND(population/(SELECT population
+                                        FROM world
+                                       WHERE name = 'Germany')*100, 0), '%') 
+    AS percentage
+  FROM world 
+ WHERE continent = 'Europe'
+```
