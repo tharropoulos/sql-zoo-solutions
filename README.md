@@ -7,7 +7,7 @@ My Solutions Of The [SQL ZOO Tutorial]( https://sqlzoo.net/wiki/SQL_Tutorial)
 2) [SELECT From World](#select-from-world)
 3) [SELECT From Nobel](#select-from-nobel)
 4) [SELECT Within SELECT](#select-within-select)
-5) [SUM And COUNT] (#sum-and-count)
+5) [SUM And COUNT](#sum-and-count)
 
 # SELECT Basics
 ##  1. **Show the population of Germany.**
